@@ -22,29 +22,46 @@
         <div id="content" class="markdown-content"></div>
     </div>
 
-    <script>
-        // 获取Markdown文件名
-        const urlParams = new URLSearchParams(window.location.search);
-        const mdFile = urlParams.get('file') || 'lstm+gan.md';
+<script>
+    // 使用XMLHttpRequest替代fetch，兼容性更好
+    function loadMarkdownFile() {
+        const mdFile = 'lstm+gan.md';  // 直接指定文件
         
-        // 加载并渲染Markdown
-        fetch(mdFile)
-            .then(response => {
-                if (!response.ok) throw new Error('文件加载失败');
-                return response.text();
-            })
-            .then(text => {
-                document.getElementById('content').innerHTML = marked.parse(text);
-                // 渲染数学公式（如果需要）
-                if (typeof MathJax !== 'undefined') {
-                    MathJax.typeset();
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', mdFile, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    document.getElementById('content').innerHTML = marked.parse(xhr.responseText);
+                    // 渲染数学公式
+                    if (typeof MathJax !== 'undefined') {
+                        MathJax.typeset();
+                    }
+                } else {
+                    document.getElementById('content').innerHTML = 
+                        `<div class="alert alert-danger">
+                            无法加载文档。请确保：
+                            <ol>
+                                <li>使用本地服务器运行（如：python -m http.server 8000）</li>
+                                <li>lstm+gan.md文件与HTML在同一目录</li>
+                            </ol>
+                            错误代码: ${xhr.status}
+                        </div>`;
                 }
-            })
-            .catch(error => {
-                document.getElementById('content').innerHTML = 
-                    `<div class="alert alert-danger">无法加载文档: ${error.message}</div>`;
-            });
-    </script>
+            }
+        };
+        
+        // 如果是file://协议，设置responseType
+        if (window.location.protocol === 'file:') {
+            xhr.responseType = 'text';
+        }
+        
+        xhr.send();
+    }
+    
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', loadMarkdownFile);
+</script>
     
     <!-- Bootstrap icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
