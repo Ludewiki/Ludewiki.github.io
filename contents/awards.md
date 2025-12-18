@@ -1,1 +1,1 @@
--[查看LSTM+GAN详细技术文档](lstm+gan.html)
+-[查看LSTM+GAN详细技术文档](https://github.com/Ludewiki/Ludewiki.github.io/tree/main/contents/lstm+gan.md)
