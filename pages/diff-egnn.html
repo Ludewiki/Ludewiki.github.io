@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>DIFFUSION + EGNN 技术分析</title>
+
+    <!-- Marked -->
+    <script src="../static/js/marked.min.js"></script>
+
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body {
+            max-width: 900px;
+            margin: 40px auto;
+            font-family: "Mulish", sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>LSTM + GAN 技术分析</h1>
+<hr>
+<div id="content">文档加载中...</div>
+
+<script>
+fetch(
+  'https://raw.githubusercontent.com/Ludewiki/Ludewiki.github.io/main/contents/diff-egnn.md'
+)
+.then(res => res.text())
+.then(md => {
+    document.getElementById('content').innerHTML = marked.parse(md);
+    MathJax.typeset();
+})
+.catch(err => {
+    document.getElementById('content').innerHTML =
+        '<p style="color:red;">文档加载失败</p>';
+});
+</script>
+
+</body>
+</html>
